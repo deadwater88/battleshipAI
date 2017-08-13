@@ -3,3 +3,49 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.row {
+  display: flex;
+
+}
+
+.cell {
+  box-sizing: border-box;
+  height: 50px;
+  width: 50px;
+  border: 2px solid black;
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell:hover {
+  border: 2px solid #32cd32;
+}
+
+.hitMark {
+  display: none;
+}
+
+.shadowMark{
+  font-size: 30px;
+  color: gray;
+  display: none;
+}
+
+.missMark {
+  display: none;
+}
+
+.cell.hit .hitMark {
+  display: inline;
+}
+
+.cell.miss .missMark {
+  display: inline;
+}
+
+.cell.shadow .shadowMark {
+  display: inline;
+}
