@@ -23,10 +23,10 @@ class Cell extends React.Component {
          data={coordinate.join("-")}
          onMouseEnter={this.props.updateSelector}>
       <div className="hitMark">
-        Hit
+        Hit!
       </div>
       <div className="missMark">
-        X
+        Miss!
       </div>
       <div className="shadowMark">
         O

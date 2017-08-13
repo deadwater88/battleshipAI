@@ -9,6 +9,14 @@ body {
 
 }
 
+ul {
+  padding: 0;
+}
+
+h2 {
+  height: 30px;
+}
+
 .cell {
   box-sizing: border-box;
   height: 50px;
@@ -20,12 +28,17 @@ body {
   justify-content: center;
 }
 
+.cell * {
+  font-weight: bold;
+}
+
 .cell:hover {
   border: 2px solid #32cd32;
 }
 
 .hitMark {
   display: none;
+  color: red;
 }
 
 .shadowMark{
@@ -48,4 +61,16 @@ body {
 
 .cell.shadow .shadowMark {
   display: inline;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 50px 0 50px;
+}
+
+.boards {
+  display: flex;
+
 }

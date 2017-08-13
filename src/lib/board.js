@@ -12,7 +12,7 @@ class Board {
       this.shipstatus["" + i] = i;
     }
     this.phase = 5;
-    this.message = "Please Setup Board: Place a size 5 ship";
+    this.shotsfired = 0;
   }
 
   allGrids(){
@@ -68,20 +68,23 @@ class Board {
   }
 
   fireOnCoordinate(coordinate){
+    this.shotsfired += 1;
     if (!this.isValidFire(coordinate)){
       this.message = "You've already fired on this coordinate!";
       return false;
     }
 
-    let [row, col] = coordinate;
+    let [col, row] = coordinate;
     let cell = this.grid[row][col];
     if (cell.ship !== 0) {
       cell.hit = true;
       this.shipstatus["" + cell.ship] -= 1;
       if (this.shipstatus["" + cell.ship] === 0) {
         this.message = `You've sunk my ship of size ${cell.ship}!`;
+      } else {
+        this.message = "Hit!";
       }
-      return "hit";
+      return true;
     } else {
       cell.miss = true;
         this.message = "You've Missed!"
@@ -91,8 +94,8 @@ class Board {
   }
 
   isValidFire(coordinate){
-    let [row, col] = coordinate;
-    !(this.grid[row][col].hit || this.grid[row][col].miss);
+    let [col, row] = coordinate;
+    return !(this.grid[row][col].hit || this.grid[row][col].miss);
   }
 
 }

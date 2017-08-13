@@ -94,7 +94,7 @@ class Game extends React.Component {
   }
 
   renderOpponentBoard(){
-    return (<div className="opponentBoard">
+    return (<div className="board">
       <h1> Opponent's Board </h1>
       <div onClick={this.fire}>
         <Grid  grid={this.state.opponentBoard.grid} updateSelector={this.updateSelector} />
@@ -103,22 +103,27 @@ class Game extends React.Component {
   }
 
   fire(){
-    let {selector} = this.state;
-    this.state.opponentBoard.fireOnCoordinate(selector)
+    let {selector, opponentBoard} = this.state;
+    opponentBoard.fireOnCoordinate(selector);
+    let message = opponentBoard.message;
+    this.setState({opponentBoard, message});
   }
 
   render(){
     return(
       <div className="Game">
-        <div className="yourBoard">
-          <h1> Your Board </h1>
-          <h2> {this.state.message} </h2>
-          {this.state.phase > 1 ? <h2> Press any key to change placement direction </h2> : " "}
-          <div onClick={this.placeShip}>
-            <Grid  grid={this.state.yourBoard.grid} updateSelector={this.updateSelector} />
+        <h2> {this.state.message} </h2>
+        <h2> Shots Fired: {this.state.opponentBoard.shotsfired} </h2>
+        <div className="boards">
+          <div className="board">
+            <h1> Your Board </h1>
+            {this.state.phase > 1 ? <h2> Place your ships.  Press any key to change placement direction </h2> : " "}
+            <div onClick={this.placeShip}>
+              <Grid  grid={this.state.yourBoard.grid} updateSelector={this.updateSelector} />
+            </div>
           </div>
+          {this.state.phase === 1 ? this.renderOpponentBoard() : ""}
         </div>
-        {this.state.phase === 1 ? this.renderOpponentBoard() : ""}
       </div>
     );
   }
