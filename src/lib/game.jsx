@@ -76,7 +76,7 @@ class Game extends React.Component {
       this.computerPlayer1.fireShot();
       this.computerPlayer2.fireShot();
       return this.setState({yourboard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board}, ()=>{
-        setTimeout(this.runComputerCycle,20);
+        setTimeout(this.runComputerCycle,10);
       });
     }
   }

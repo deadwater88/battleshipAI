@@ -1,6 +1,6 @@
 class Board {
   constructor(owner){
-    this.owner = owner
+    this.owner = owner;
     this.grid = Array(8).fill(1);
     this.grid = this.grid.map(()=>{
       return Array(8).fill(1).map(()=> {
