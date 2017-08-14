@@ -94,13 +94,18 @@ class Board {
       this.message = "You've Missed!";
       return false;
     }
-
   }
+  // conducts firing on a coordinate. Returns false on invalid coordinate, true on valid coordinate, and false on invalid coordinate
+  // also sets appropriate message.
+
 
   isValidFire(coordinate){
     let [col, row] = coordinate;
     return !(this.grid[row][col].hit || this.grid[row][col].miss);
   }
+
+  // checks that a square has not been fired on before
+
 
   isDefeated(){
     let life = 0;
@@ -109,6 +114,7 @@ class Board {
     }
     return life === 0;
   }
+  // checks the total sum of shipstatuses will return true if sum of ship statuses are zero
 
 }
 
