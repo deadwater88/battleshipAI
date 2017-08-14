@@ -165,6 +165,10 @@ class ComputerPlayer {
       }
     }
   }
+  //Targeting heuristics. Initially assumes that all grids are equally likely.
+  //The computer will track the total number of hits generated for each coordinate.
+  //And will proportionally have a higher chance of selecting those coordinates in selection.
+  //Will likely require several hundred games before effects are significant.
 
 
 }

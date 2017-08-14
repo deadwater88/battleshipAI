@@ -31,6 +31,7 @@ class Game extends React.Component {
     this.state.phase = 5;
     this.state.selector = [0,0];
   }
+  //setup for human vs AI game
 
   setUpComputerGames(){
     this.shotsfiredLog = [];
@@ -44,12 +45,16 @@ class Game extends React.Component {
     this.computerPlayer1 = new ComputerPlayer(opponentBoard, yourBoard);
     this.computerPlayer2 = new ComputerPlayer(yourBoard, opponentBoard);
   }
+  //setup for AI vs AI games
+
 
   componentDidMount(){
     if (this.computerGame) {
       setTimeout(this.runComputerCycle,0);
     }
   }
+  //will start computer cycling after component mounts
+
 
   resetComputerGame(){
     let yourBoard = new Board("AI1");
@@ -62,6 +67,7 @@ class Game extends React.Component {
     this.computerPlayer2.reset();
     this.setState({yourBoard, opponentBoard}, this.runComputerCycle);
   }
+  //resets computers and boards and forces re-render and then will trigger another game cycle
 
   runComputerCycle(){
     if (this.cyclesRan > this.targetCycles) {
@@ -80,21 +86,25 @@ class Game extends React.Component {
       });
     }
   }
+  //Runs computer cycle, and then triggers re-render and and then runs more cycles
 
 
   componentWillMount(){
     document.body.addEventListener("keydown", this.switchDirections.bind(this) );
   }
+  //add eventlistener for changing placement direction. Human only.
 
   componentDidUpdate(){
     window.state = this.state;
   }
+  //makes state accessible on window
 
   switchDirections(){
     let direction = this.state.direction === "h" ? "v" : "h";
     this.clearShadows();
     this.setState({direction}, this.renderShadow);
   }
+  //changes placement direction and force re-render; Human only.
 
   updateSelector(e){
     let data = e.target.getAttribute("data");
@@ -103,6 +113,7 @@ class Game extends React.Component {
       this.setState({selector}, this.renderShadow);
     }
   }
+  // updates coordinate of selector by checking data-coordinate of target event cell. Human only.
 
   renderShadow(){
     let coordinate = this.state.selector;
@@ -118,6 +129,7 @@ class Game extends React.Component {
     });
     this.setState({yourBoard: this.state.yourBoard});
   }
+  // renders shadows indicating where ship will be placed. Human only.
 
   clearShadows(){
     this.state.yourBoard.allGrids().forEach((cell)=>{
@@ -126,6 +138,7 @@ class Game extends React.Component {
       }
     });
   }
+  // clears placement shadows. Human only.
 
 
   placeShip(){
@@ -144,6 +157,7 @@ class Game extends React.Component {
       this.setState({message: "Invalid Placement. Please Try Again"});
     }
   }
+  //places ship based on selector coordinates, current phase, and direction
 
   generateExperienceURL(text){
     var textFile = null;
@@ -158,6 +172,7 @@ class Game extends React.Component {
     // returns a URL you can use as a href
     return textFile;
   }
+  //generates text copy of computer experience for download.
 
 
   fire(){
@@ -175,6 +190,8 @@ class Game extends React.Component {
     this.setState({yourboard: this.state.yourboard});
   }
 
+  // fires on cell based on current selector. Human only.
+
   renderOpponentBoard(){
     return (<div className="board">
     <h1> Opponent's Board </h1>
@@ -182,7 +199,10 @@ class Game extends React.Component {
       <Grid  grid={this.state.opponentBoard.grid} updateSelector={this.updateSelector} />
     </div>
   </div>);
-}
+  }
+
+  // renders opponentboard. Conditionally rendered on phase === 1
+
   renderCyclingStats(){
     return (
     <h2>
@@ -191,6 +211,7 @@ class Game extends React.Component {
       <div> Average shots required: {this.shotsfiredLog.length === 0 || (this.shotsfiredLog.reduce((a,b)=> a + b ) / this.shotsfiredLog.length) }</div>
     </h2>)
   }
+  // renders computer cycling stats. conditionally rendered on this.computerGame === true
 
   render(){
     return(
