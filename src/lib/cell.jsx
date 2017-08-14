@@ -7,7 +7,7 @@ class Cell extends React.Component {
   }
 
   render(){
-    let {ship, hit, miss, coordinate, shadow} = this.props;
+    let {hit, miss, coordinate, shadow} = this.props;
     let classes = "cell";
     if (hit) {
       classes += " hit";

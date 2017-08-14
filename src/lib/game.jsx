@@ -7,6 +7,7 @@ class Game extends React.Component {
   constructor(props){
     super(props);
     this.state = {};
+
     this.setUpHumanGame();
     this.state.direction = "h";
     this.state.phase = 5;
@@ -24,6 +25,7 @@ class Game extends React.Component {
   }
 
   setUpComputerGame(){
+    let this.cycles = window.prompt("How many Cycles do you want run") ?
     this.state.yourBoard = new Board("AI1");
     this.state.opponentBoard = new Board("AI2");
     this.state.computerPlayer1 = new ComputerPlayer(this.state.opponentBoard, this.state.yourBoard);
@@ -107,7 +109,18 @@ class Game extends React.Component {
     opponentBoard.fireOnCoordinate(selector);
     let message = opponentBoard.message;
     this.setState({opponentBoard, message});
+    if (opponentBoard.isDefeated()) {
+      window.alert("You've sunk all of the enemy's  ships!");
+      this.state.computerPlayer1.saveExperience();
+    }
+    this.state.computerPlayer1.fireShot();
+    if (this.state.yourBoard.isDefeated()) {
+      window.alert("The enemy has sunk all of your ships!");
+      this.state.computerPlayer1.saveExperience();
+    }
+    this.setState({yourboard: this.state.yourboard});
   }
+
 
   render(){
     return(

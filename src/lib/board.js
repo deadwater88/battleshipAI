@@ -87,8 +87,8 @@ class Board {
       return true;
     } else {
       cell.miss = true;
-        this.message = "You've Missed!"
-      return "miss";
+      this.message = "You've Missed!";
+      return false;
     }
 
   }
@@ -96,6 +96,14 @@ class Board {
   isValidFire(coordinate){
     let [col, row] = coordinate;
     return !(this.grid[row][col].hit || this.grid[row][col].miss);
+  }
+
+  isDefeated(){
+    let life = 0;
+    for (let ship in this.shipstatus){
+      life += this.shipstatus[ship];
+    }
+    return life === 0;
   }
 
 }
