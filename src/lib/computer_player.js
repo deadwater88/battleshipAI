@@ -19,6 +19,8 @@ class ComputerPlayer {
       };
       xhr.send();
   }
+  // loads experience txt. Currently not used.
+
 
   reset(){
     this.setupboard();
@@ -26,10 +28,13 @@ class ComputerPlayer {
     this.hunted = [];
     this.generateCandidates();
   }
+  //prepares computer for new game by regenerating candidates and resetting hunted queue,
+  //newboard should be fed into the player from outside.
 
   renderExperience(){
     return JSON.stringify(this.experience);
   }
+  //Generates string version of computer's experience
 
   setupboard(){
     while (this.board.phase > 1) {
@@ -37,6 +42,7 @@ class ComputerPlayer {
       this.board.placeShip(this.board.phase, x, y, direction);
     }
   }
+  // setsup board by placing new ships
 
   randomPlacementPosition(){
     let x = parseInt(Math.random(1) * 8 );
@@ -49,6 +55,9 @@ class ComputerPlayer {
     }
     return {x, y, direction};
   }
+  // generates a random placement object for placing ship randomly
+
+
 
   smallestEnemyShip(){
     let {shipstatus} = this.enemyboard;

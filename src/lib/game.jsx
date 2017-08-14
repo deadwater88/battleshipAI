@@ -42,7 +42,6 @@ class Game extends React.Component {
     this.state = {yourBoard, opponentBoard};
     this.state.phase = 1;
     this.computerPlayer1 = new ComputerPlayer(opponentBoard, yourBoard);
-    this.state.computerPlayer1 = this.state;
     this.computerPlayer2 = new ComputerPlayer(yourBoard, opponentBoard);
   }
 
@@ -71,11 +70,12 @@ class Game extends React.Component {
     if (this.state.yourBoard.isDefeated() || this.state.opponentBoard.isDefeated()){
       this.cyclesRan += 1;
       this.shotsfiredLog.push(this.state.opponentBoard.shotsfired);
+      console.log(this.computerPlayer1.renderExperience());
       return setTimeout(this.resetComputerGame(), 500);
     } else {
       this.computerPlayer1.fireShot();
       this.computerPlayer2.fireShot();
-      return this.setState({yourboard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board}, ()=>{
+      return this.setState({yourBoard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board}, ()=>{
         setTimeout(this.runComputerCycle,10);
       });
     }
