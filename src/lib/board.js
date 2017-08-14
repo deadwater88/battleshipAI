@@ -41,13 +41,15 @@ class Board {
     }
     return grids;
   }
+  // Used for ship placement. Given a coordinate, direction and size of the ship,
+  // will return a list of cooresponding coordinates with length equal to size of ship.
+
 
   placeShip(size, x, y, direction){
     if (!this.isValidPlacement(size, x, y, direction)) {
       this.message + "A ship already exist in this spot";
       return false;
     }
-
     let grids = this.identifyGrids(size, x, y, direction);
     grids.forEach((coordinate)=>{
       let [col, row] = coordinate;
@@ -57,6 +59,7 @@ class Board {
     this.phase -= 1;
     return true;
   }
+  // places your ship
 
   isValidPlacement(size, x, y, direction){
     let grids = this.identifyGrids(size, x, y, direction);
@@ -66,6 +69,7 @@ class Board {
       return cell.ship === 0;
     });
   }
+  //Used for validating ship placement by checking if all cells to be occupied currently has no ship (cell.ship === 0)
 
   fireOnCoordinate(coordinate){
     this.shotsfired += 1;
