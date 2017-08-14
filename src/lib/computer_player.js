@@ -18,12 +18,15 @@ class ComputerPlayer {
       xhr.send();
   }
 
-  saveExperience(){
-    let txtFile = "/experience.txt";
-    let file = new File(txtFile);
-    file.open("w");
-    file.write(JSON.stringify(this.experience));
-    file.close();
+  reset(){
+    this.setupboard();
+    this.mode = "blind";
+    this.hunted = [];
+    this.generateCandidates();
+  }
+
+  renderExperience(){
+    return JSON.stringify(this.experience);
   }
 
   setupboard(){
@@ -152,9 +155,6 @@ class ComputerPlayer {
     }
   }
 
-  endGame(){
-    this.saveExperience();
-  }
 
 }
 
