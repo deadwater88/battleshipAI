@@ -4,8 +4,10 @@ class ComputerPlayer {
     this.board = board;
     this.setupboard();
     this.mode = "blind";
-    this.read("/experience.txt");
     this.hunted = [];
+    this.experience = {};
+    this.generateCandidates();
+    // return this.read("/experience.txt");
   }
 
   read(textFile){
@@ -105,7 +107,7 @@ class ComputerPlayer {
       case true:
         this.mode = "hunt";
         this.hunted = this.hunted.concat(this.neighbors(targetCoordinate));
-        this.experience[strCoordinate] += 1;
+        this.experience[strCoordinate] = (this.experience[strCoordinate] || 0) + 1;
         break;
       case false:
         break;

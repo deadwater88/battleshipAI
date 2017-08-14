@@ -10,9 +10,11 @@ class Game extends React.Component {
     this.updateSelector = this.updateSelector.bind(this);
     this.placeShip = this.placeShip.bind(this);
     this.fire = this.fire.bind(this);
+    this.runComputerCycle = this.runComputerCycle.bind(this);
+    this.resetComputerGame = this.resetComputerGame.bind(this);
 
     let choice = window.prompt("Human vs AI or AI vs AI (h/a)?").toLowerCase();
-    if (choice === "h") {
+    if (choice == "h") {
       this.setUpHumanGame();
     } else {
       this.setUpComputerGames();
@@ -31,14 +33,23 @@ class Game extends React.Component {
   }
 
   setUpComputerGames(){
+    this.shotsfiredLog = [];
+    this.computerGame = true;
     this.cyclesRan = 0;
     this.targetCycles = window.prompt("How many Cycles do you want run?");
-    this.state = {yourBoard: {}, opponentBoard: {}};
     let yourBoard = new Board("AI1");
     let opponentBoard = new Board("AI2");
+    this.state = {yourBoard, opponentBoard};
+    this.state.phase = 1;
     this.computerPlayer1 = new ComputerPlayer(opponentBoard, yourBoard);
+    this.state.computerPlayer1 = this.state;
     this.computerPlayer2 = new ComputerPlayer(yourBoard, opponentBoard);
-    this.setState({yourBoard, opponentBoard})
+  }
+
+  componentDidMount(){
+    if (this.computerGame) {
+      setTimeout(this.runComputerCycle,0);
+    }
   }
 
   resetComputerGame(){
@@ -50,17 +61,24 @@ class Game extends React.Component {
     this.computerPlayer2.board = opponentBoard;
     this.computerPlayer1.reset();
     this.computerPlayer2.reset();
-    this.setState({yourBoard, opponentBoard});
+    this.setState({yourBoard, opponentBoard}, this.runComputerCycle);
   }
 
   runComputerCycle(){
-    while(!(this.state.yourboard.isDefeated || this.state.opponentBoard.isDefeated)) {
+    if (this.cyclesRan > this.targetCycles) {
+      return;
+    }
+    if (this.state.yourBoard.isDefeated() || this.state.opponentBoard.isDefeated()){
+      this.cyclesRan += 1;
+      this.shotsfiredLog.push(this.state.opponentBoard.shotsfired);
+      return setTimeout(this.resetComputerGame(), 500);
+    } else {
       this.computerPlayer1.fireShot();
       this.computerPlayer2.fireShot();
-      this.setState({yourboard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board});
+      return this.setState({yourboard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board}, ()=>{
+        setTimeout(this.runComputerCycle,20);
+      });
     }
-    debugger;
-    console.log(`${this.cyclesRan} cycles ran so far`)
   }
 
 
@@ -120,7 +138,7 @@ class Game extends React.Component {
     if (board.isValidPlacement(phase, x, y, direction)) {
       board.placeShip(phase, x, y, direction);
       phase -= 1;
-      let message = phase > 1 ? "Ship Successfully Placed" : "You can now fire on your opponent's board"
+      let message = phase > 1 ? "Ship Successfully Placed" : "You can now fire on your opponent's board";
       this.setState({board, phase, message});
     } else {
       this.setState({message: "Invalid Placement. Please Try Again"});
@@ -128,7 +146,7 @@ class Game extends React.Component {
   }
 
   generateExperienceURL(text){
-    var textFile = null
+    var textFile = null;
     var data = new Blob([text], {type: 'text/plain'});
     // If we are replacing a previously generated file we need to
     // manually revoke the object URL to avoid memory leaks.
@@ -141,14 +159,6 @@ class Game extends React.Component {
     return textFile;
   }
 
-  renderOpponentBoard(){
-    return (<div className="board">
-      <h1> Opponent's Board </h1>
-      <div onClick={this.fire}>
-        <Grid  grid={this.state.opponentBoard.grid} updateSelector={this.updateSelector} />
-      </div>
-    </div>);
-  }
 
   fire(){
     let {selector, opponentBoard} = this.state;
@@ -165,10 +175,27 @@ class Game extends React.Component {
     this.setState({yourboard: this.state.yourboard});
   }
 
+  renderOpponentBoard(){
+    return (<div className="board">
+    <h1> Opponent's Board </h1>
+    <div onClick={this.fire}>
+      <Grid  grid={this.state.opponentBoard.grid} updateSelector={this.updateSelector} />
+    </div>
+  </div>);
+}
+  renderCyclingStats(){
+    return (
+    <h2>
+      <div> Cycles Ran: {this.cyclesRan} </div>
+      <div> Shotsfired per game: {this.shotsfiredLog.join(", ")} </div>
+      <div> Average shots required: {this.shotsfiredLog.length === 0 || (this.shotsfiredLog.reduce((a,b)=> a + b ) / this.shotsfiredLog.length) }</div>
+    </h2>)
+  }
 
   render(){
     return(
       <div className="Game">
+        {this.computerGame ? this.renderCyclingStats() : ""}
         <h2> {this.state.message} </h2>
         <h2> Shots Fired: {this.state.opponentBoard.shotsfired} </h2>
         <div className="boards">
