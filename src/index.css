@@ -59,6 +59,11 @@ ul {
   display: inline;
 }
 
+.boards {
+  display: flex;
+  justify-content: space-between;
+}
+
 .board {
   display: flex;
   flex-direction: column;
