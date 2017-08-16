@@ -1,17 +1,17 @@
 class Board {
   constructor(owner){
     this.owner = owner;
-    this.grid = Array(8).fill(1);
+    this.grid = Array(3).fill(1);
     this.grid = this.grid.map(()=>{
-      return Array(8).fill(1).map(()=> {
+      return Array(3).fill(1).map(()=> {
         return {ship: 0, hit: false, miss: false, shadow: false};
       });
     });
     this.shipstatus = {};
-    for (let i = 2; i <= 5; i++){
+    for (let i = 2; i <= 3; i++){
       this.shipstatus["" + i] = i;
     }
-    this.phase = 5;
+    this.phase = 3;
     this.shotsfired = 0;
   }
 
@@ -29,12 +29,12 @@ class Board {
     let grids = [];
     let start;
     if (direction === "h") {
-      start = Math.min(8 - size, x);
+      start = Math.min(3 - size, x);
       for (let col = start; col < start + size; col++) {
         grids.push([col, y]);
       }
     } else {
-      start = Math.min(8 - size, y);
+      start = Math.min(3 - size, y);
       for (let row = start; row < start + size; row++) {
         grids.push([x, row]);
       }

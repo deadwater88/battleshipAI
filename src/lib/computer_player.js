@@ -45,8 +45,8 @@ class ComputerPlayer {
   // setsup board by placing new ships
 
   randomPlacementPosition(){
-    let x = parseInt(Math.random(1) * 8 );
-    let y = parseInt(Math.random(1) * 8 );
+    let x = parseInt(Math.random(1) * 3 );
+    let y = parseInt(Math.random(1) * 3 );
     let direction;
     if (Math.random() > .5) {
       direction = "h";
@@ -69,14 +69,13 @@ class ComputerPlayer {
     }
     return smallestShip;
   }
-
   //Returns smallest ship enemy ship size available. Will have possible use in enhancing heuristics. Currently not used.
 
   generateCandidates(){
     let candidate_weights = {};
     let all_candidates = {};
-    for (let x = 0; x < 8; x++){
-      for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 3; x++){
+      for (let y = 0; y < 3; y++) {
         let strCoord = `${x}-${y}`;
         if ((x + y) % 2 === 1){
           candidate_weights[strCoord] = (this.experience[strCoord] || 1);
@@ -110,6 +109,7 @@ class ComputerPlayer {
 
 
   fire(strCoordinate){
+    debugger;
     let targetCoordinate = strCoordinate.split("-").map((num)=> parseInt(num));
     let result = this.enemyboard.fireOnCoordinate(targetCoordinate);
     switch (result) {

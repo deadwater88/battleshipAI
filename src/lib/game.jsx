@@ -2,6 +2,8 @@ import React from 'react';
 import Board from './board';
 import Grid from './grid';
 import ComputerPlayer from './computer_player';
+import ComputerPlayerMk2 from './computer_player_mk2';
+import math from 'mathjs';
 
 class Game extends React.Component {
   constructor(props){
@@ -20,6 +22,7 @@ class Game extends React.Component {
       this.setUpComputerGames();
     }
     this.computerLibrary = {experience: this.computerPlayer1.experience};
+    window.math = math;
   }
 
   setUpHumanGame(){
@@ -28,7 +31,7 @@ class Game extends React.Component {
     this.state.opponentBoard = new Board("AI1");
     this.computerPlayer1 = new ComputerPlayer(this.state.yourBoard ,this.state.opponentBoard);
     this.state.direction = "h";
-    this.state.phase = 5;
+    this.state.phase = 3;
     this.state.selector = [0,0];
   }
   //setup for human vs AI game
@@ -42,7 +45,7 @@ class Game extends React.Component {
     let opponentBoard = new Board("AI2");
     this.state = {yourBoard, opponentBoard};
     this.state.phase = 1;
-    this.computerPlayer1 = new ComputerPlayer(opponentBoard, yourBoard);
+    this.computerPlayer1 = new ComputerPlayerMk2(opponentBoard, yourBoard);
     this.computerPlayer2 = new ComputerPlayer(yourBoard, opponentBoard);
   }
   //setup for AI vs AI games
@@ -74,16 +77,14 @@ class Game extends React.Component {
       return;
     }
     if (this.state.yourBoard.isDefeated() || this.state.opponentBoard.isDefeated()){
+      debugger;
       this.cyclesRan += 1;
       this.shotsfiredLog.push(this.state.opponentBoard.shotsfired);
-      console.log(this.computerPlayer1.renderExperience());
-      return setTimeout(this.resetComputerGame(), 500);
+      return this.resetComputerGame();
     } else {
       this.computerPlayer1.fireShot();
       this.computerPlayer2.fireShot();
-      return this.setState({yourBoard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board}, ()=>{
-        setTimeout(this.runComputerCycle,10);
-      });
+      return this.setState({yourBoard: this.computerPlayer1.board, opponentBoard: this.computerPlayer2.board}, this.runComputerCycle);
     }
   }
   //Runs computer cycle, and then triggers re-render and and then runs more cycles
@@ -229,7 +230,6 @@ class Game extends React.Component {
           </div>
           {this.state.phase === 1 ? this.renderOpponentBoard() : ""}
         </div>
-        <a href={this.generateExperienceURL(this.computerPlayer1.renderExperience())} download={"experience.txt"}> Download AI Experience text </a>
       </div>
     );
   }

@@ -4,6 +4,8 @@
   "private": false,
   "homepage": "https://deadwater88.github.io/battleshipAI/",
   "dependencies": {
+    "math.js": "^1.1.40",
+    "mathjs": "^3.16.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.11"
